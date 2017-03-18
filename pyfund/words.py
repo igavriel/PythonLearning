@@ -15,7 +15,7 @@ def fetch_words(url):
         url: the URL of a UTF-8 text document.
 
     Returns:
-        A list of strings containg the words from the document.        
+        A list of strings containg the words from the document.
     """
     with urlopen(url) as story:
         story_words = []
@@ -23,6 +23,7 @@ def fetch_words(url):
             line_words = line.decode('utf-8').split()
             for word in line_words:
                 story_words.append(word)
+    return story_words
 
 
 def print_items(items):
@@ -41,7 +42,7 @@ def main(url):
     Args:
         url: the URL of a UTF-8 text document.
     """
-    if url == None:
+    if url is None:
         url = 'http://sixty-north.com/c/t.txt'
     words = fetch_words(url)
     print_items(words)
@@ -49,4 +50,7 @@ def main(url):
 
 # technique to run from command line
 if __name__ == '__main__':
-    main(sys.argv[1])   # the '0' argument is the module file name
+    #if sys.argv.count is 1:
+    #    main('http://sixty-north.com/c/t.txt')
+    #else:
+        main(sys.argv[1])   # the '0' argument is the module file name
