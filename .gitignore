@@ -90,3 +90,4 @@ ENV/
 
 # Demo add by ilan
 PythonFundamentals/
+boto.cfg

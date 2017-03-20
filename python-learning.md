@@ -1,5 +1,9 @@
 Python Fundamentals
 -------------------
+https://app.pluralsight.com/player?course=python-fundamentals&author=austin-bingham&name=python-fundamentals-m06-exceptions&clip=0&mode=live
+
+https://www.codecademy.com/articles/glossary-python
+
 
 PEP 8 - Python style guide
 PEP 20 - The Zen of Python
