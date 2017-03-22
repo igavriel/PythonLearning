@@ -176,3 +176,37 @@ new_s1 is not s    # True
 new_s2 is not s    # True
 new_s3 is not s    # True
 ```
+
+--------------------
+module 7 - exception
+--------------------
+```python
+def convert(s):
+    '''Convert a string to an integer.'''
+    try:
+        return int(s)
+    except (ValueError, TypeError) as e:
+        print("Conversion error: {}".format(str(e)))
+        raise
+```
+
+------------------
+module 8 - lambdas
+------------------
+```python
+words = "The quick brown fox jumped over the lazy dog".split()
+words
+[len(word) for word in words]	# list of length of words
+{len(word) for word in words}	# set of length of words
+
+from pprint import pprint as pp
+az_to_num = {'a':1, 'b':2, 'c':3}
+pp(az_to_num)
+num_to_az = {az: num for num, az in az_to_num.items()}
+pp(num_to_az)
+
+import os
+import glob
+file_sizes = { os.path.realpath(p): os.stat(p).st_size for p in glob.glob('*.py')}
+pp(file_sizes)
+```
