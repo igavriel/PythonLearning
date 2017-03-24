@@ -50,7 +50,7 @@ def main(url):
 
 # technique to run from command line
 if __name__ == '__main__':
-    #if sys.argv.count is 1:
-    #    main('http://sixty-north.com/c/t.txt')
-    #else:
+    if len(sys.argv) == 1:
+        main('http://sixty-north.com/c/t.txt')
+    else:
         main(sys.argv[1])   # the '0' argument is the module file name

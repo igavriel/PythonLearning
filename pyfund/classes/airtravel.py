@@ -71,4 +71,7 @@ def main(flight):
 
 #################################################
 if __name__ == '__main__':
-    main(sys.argv[1])   # the '0' argument is the module file name
+    if len(sys.argv) == 1:
+        main('LY123')
+    else:
+       main(sys.argv[1])   # the '0' argument is the module file name
