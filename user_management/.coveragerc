@@ -1,0 +1,9 @@
+[run]
+branch = True
+source = user_management
+
+[report]
+omit = 
+    tests/*
+    */__init__.py
+show_missing = True
