@@ -71,7 +71,7 @@ class BullsAndCowsGame:
                 bc.add_cow()
                 continue
 
-        pp(f"Bulls {bc.bulls}, Cows {bc.cows} - code_set {self._code_set}")
+        pp(f"Bulls {bc.bulls}, Cows {bc.cows}")
         return False
 
 
