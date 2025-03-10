@@ -1,3 +1,4 @@
+from ast import Assert
 import sys
 import random
 from pprint import pprint as pp
@@ -34,6 +35,21 @@ def list_stuff():
     list_example.extend(more_list)
     assert(list_example[4]=='E')
 
+def set_stuff():
+    print("set_stuff")
+    set_example = {'A', "B"}
+    # direct access to set
+    item = "A"
+    if item in set_example:
+        pass
+    else:
+        Assert(False)
+    item = "C"
+    if item not in set_example:
+        pass
+    else:
+        Assert(False)
+
 def dict_stuff():
     print("dict_stuff")
     dict_example = {'A': 1, "B":2}
@@ -61,6 +77,7 @@ if __name__ == '__main__':
     string_stuff()
     math_stuff()
     list_stuff()
+    set_stuff()
     dict_stuff()
     tuple_stuff()
     pass
