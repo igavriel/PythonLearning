@@ -1,4 +1,5 @@
 from typing import List, Optional
+import math
 
 # Definition for singly-linked list.
 class ListNode:
@@ -13,7 +14,7 @@ class Solution:
         for index in range(0, len(nums)):
             for inner in range(index+1, len(nums)):
                 sum = nums[index] + nums[inner]
-                if sum == target:
+                if sum == target: 
                     return [index, inner]
                 
     ########################################################################
@@ -77,7 +78,7 @@ class Solution:
         return res
     
     ########################################################################
-    # 4
+    # 3
     def lengthOfLongestSubstring(self, s: str) -> int:
         str_set = set()
         longest = 0
@@ -103,7 +104,7 @@ class Solution:
 
 
     ########################################################################
-    # 5
+    # 4
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         i, j = 0, 0
         merged = []
@@ -127,7 +128,8 @@ class Solution:
         else:
             return merged[pos]
 
-        
+    ########################################################################
+    # 5 
     def longestPalindrome(self, s: str) -> str:
 
         def is_palindrome(i, j) -> bool:
@@ -147,7 +149,25 @@ class Solution:
             for start in range(len(s) - length + 1):
                 if is_palindrome(start, start + length - 1):
                     return s[start : start + length]
-        
+
+    ########################################################################
+    # 6 ZigZag
+    def convertStrToVerticalCol(self, s: str, numRows: int) -> str:
+        # ABC DEF AB , 3 ==> ceil 8 / 3  = 2.6 => 3
+        # 036 147 25
+        #
+        # A D A
+        # B E B
+        # C F
+        length = len(s)
+        col_pos = 0
+        total_cols = math.ceil(length/numRows)
+        res = ""
+        for index in range(length):
+            
+            pass
+            
+        return ""
         
 ########################################################################
 s = Solution()
@@ -189,3 +209,27 @@ assert s.findMedianSortedArrays([1,3],[2,4]) == 2.5
 
 assert s.longestPalindrome("babad") == "bab"
 assert s.longestPalindrome("cbbb") == "bbb"
+
+def isPalindrome(s: str) -> bool:
+    l = 0
+    r = len(s)-1
+    while l<r:
+        #print("A:", l, r)
+        if s[l] != s[r]:
+            #print("STOP:", l, r)
+            return False
+        
+        l += 1
+        r -= 1
+
+    return True
+
+
+assert isPalindrome("abcdef") == False
+assert isPalindrome("abcde") == False
+assert isPalindrome("aba") == True
+assert isPalindrome("abba") == True
+assert isPalindrome("abcba") == True
+
+
+assert s.convertStrToVerticalCol("ABCDEFABC", 3) == "ADABEBCFC"
