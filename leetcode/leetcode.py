@@ -1,11 +1,7 @@
 from typing import List, Optional
+from list_node import ListNode
 import math
 
-# Definition for singly-linked list.
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
 
 class Solution:
     ########################################################################
@@ -155,19 +151,88 @@ class Solution:
     def convertStrToVerticalCol(self, s: str, numRows: int) -> str:
         # ABC DEF AB , 3 ==> ceil 8 / 3  = 2.6 => 3
         # 036 147 25
+        # 000 111 22
         #
         # A D A
         # B E B
         # C F
+        #
+        # PAYPALISHIRING , 3 == "PAHNAPLSIIGYIR"
+        
+        
+        # P   A   H   N
+        # A P L S I I G
+        # Y   I   R
         length = len(s)
-        col_pos = 0
-        total_cols = math.ceil(length/numRows)
-        res = ""
+        res = list('\0' * length )
+        col_size = math.ceil(length/numRows)
         for index in range(length):
+            col_pos = index % col_size
+            row_pos = int( index / numRows )
+            pos = row_pos + col_pos * col_size
+            res[pos]=s[index]
             
-            pass
+        return "".join(res)
+
+    ########################################################################    
+    # 6 Reverse integer
+    def reverseInt(self, x: int) -> int:
+        num = x
+        reverse = 0
+        if x > 0:
+            while num > 0:
+                digit = num % 10
+                num //= 10
+                reverse = reverse * 10 + digit
+        else:
+            while num < 0:
+                digit = num % -10
+                num = math.ceil(num/10)
+                reverse = reverse * 10 + digit
+                
+        if reverse > 2**31 - 1 or reverse <  -2**31:
+            reverse = 0
             
-        return ""
+        return reverse
+    
+    ########################################################################    
+    # 6 string to integer
+    def myAtoi(self, s: str) -> int:
+        res = 0
+        parse = False
+
+        multiplier = 1
+        for chr in s:
+
+            if parse is False:
+                if chr.isspace():
+                    continue
+            
+                if chr == '-':
+                    parse = True
+                    multiplier = -1
+                    continue
+
+                if chr == '+':
+                    parse = True
+                    continue
+                
+                if chr.isdigit() == False:
+                    break
+
+            if chr.isdigit() == True:
+                res = res * 10 + int(chr)
+                parse = True
+                if multiplier == 1 and res > 2**31 - 1:
+                    return 2**31 - 1
+                if multiplier == -1 and res > 2**31:
+                    return -2**31
+                
+            elif parse is True:
+                break
+
+        return res * multiplier
+        
         
 ########################################################################
 s = Solution()
@@ -231,5 +296,21 @@ assert isPalindrome("aba") == True
 assert isPalindrome("abba") == True
 assert isPalindrome("abcba") == True
 
+# Error
+#assert s.convertStrToVerticalCol("ABCDEFABC", 3) == "ADABEBCFC"
+#assert s.convertStrToVerticalCol("PAYPALISHIRING", 3) == "PAHNAPLSIIGYIR"
 
-assert s.convertStrToVerticalCol("ABCDEFABC", 3) == "ADABEBCFC"
+assert s.reverseInt(123) == 321
+assert s.reverseInt(-120) == -21
+assert s.reverseInt(1534236469) == 0 # bigger than max int 9646324351
+assert s.reverseInt(-1534236469) == 0 # smaller than max int 9646324351
+assert s.reverseInt(12345) == 54321
+assert s.reverseInt(-12345) == -54321
+
+
+assert s.myAtoi("      00042") == 42
+assert s.myAtoi("     -00042") == -42
+assert s.myAtoi("  42c42    ") == 42
+assert s.myAtoi(" 9646324351") == 2**31-1 # bigger than max int 9646324351
+assert s.myAtoi("-9646324351") == -2**31 # smaller than max int 9646324351
+assert s.myAtoi("WORD 964351") == 0 # smaller than max int 9646324351
