@@ -233,7 +233,51 @@ class Solution:
 
         return res * multiplier
         
+    ########################################################################    
+    # 6 isPalindromeInt integer
+    def isPalindromeInt(self, x: int) -> bool:
+        tmp = x
+        reverse = 0
+        while tmp > 0:
+            digit = tmp % 10
+            tmp //= 10
+            reverse = reverse * 10 + digit
         
+        return reverse==x
+    
+    
+    ########################################################################    
+    # 6 maxArea
+    def maxAreaNaive(self, height: List[int]) -> int:
+        length = len(height)
+        max = 0
+        
+        for l in range(length):
+            for r in range(l+1,length):
+                x = min(height[l], height[r])
+                size = r-l
+                area = size * x
+                if area > max:
+                    max = area
+        
+        return max
+    
+    def maxArea(self, height: List[int]) -> int:
+        left = 0
+        right = len(height) - 1
+        max_h = 0
+
+        while left<right:
+            min_h = min(height[left], height[right])
+            max_h = max(max_h, (right-left)*min_h )
+
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+        return max_h
+    
+
 ########################################################################
 s = Solution()
 
@@ -314,3 +358,16 @@ assert s.myAtoi("  42c42    ") == 42
 assert s.myAtoi(" 9646324351") == 2**31-1 # bigger than max int 9646324351
 assert s.myAtoi("-9646324351") == -2**31 # smaller than max int 9646324351
 assert s.myAtoi("WORD 964351") == 0 # smaller than max int 9646324351
+
+assert s.isPalindromeInt(121) == True
+assert s.isPalindromeInt(120) == False
+assert s.isPalindromeInt(-121) == False
+assert s.isPalindromeInt(12321) == True
+assert s.isPalindromeInt(123321) == True
+assert s.isPalindromeInt(123421) == False
+assert s.isPalindromeInt(1000021) == False
+
+assert s.maxArea([1,1])==1
+assert s.maxArea([3,2])==2
+assert s.maxArea([3,1,2])==4
+assert s.maxArea([1,8,6,2,5,4,8,3,7])==49
