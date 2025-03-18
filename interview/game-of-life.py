@@ -1,8 +1,18 @@
 # https://playgameoflife.com/
+"""
+0 0 0 0 0
+0 1 0 0 0
+0 0 1 0 0
+0 0 0 1 0
+0 0 0 0 0
+"""
 
 import select
-from typing import List
+from typing import List, Self
 
+"""
+cell class x,y,live
+"""
 class Cell:
     debug = False
     def __init__(self, x : int, y: int, live : bool) :
@@ -16,6 +26,78 @@ class Cell:
             return f"[{self.x},{self.y}]={s}"
         else:
             return f"{s}"
+    
+    def clone(self) -> Self:
+        return Cell(self.x, self.y, self.live)
+
+    def is_neighbor(self, other : 'Cell') -> bool:
+        xdif =  abs(other.x - self.x)
+        ydif =  abs(other.y - self.y)
+        if xdif <= 1 and ydif <=1:
+            return True
+        return False
+
+class NbrCell:
+    def __init__(self, cell : Cell):
+        self.TL = None
+        self.TOP = None
+        self.TR = None
+        self.LEFT = None
+        self.CENTER = cell
+        self.RIGHT = None
+        self.BL = None
+        self.BOTTOM = None
+        self.BR = None
+
+        self.countLive = 0
+        self.countDead = 8
+
+    def add(self, other: Cell) -> bool:
+        if self.CENTER.is_neighbor(other) is False:
+            return False
+
+        posX = other.x - self.getCenter().x + 1
+        posY = other.y - self.getCenter().y + 1
+
+        prev_life = False
+        if posX == 0 and posY == 0:
+            prev_life = False if self.TL is None else self.TL.live  
+            self.TL = other
+        elif posX == 0 and posY == 1:
+            prev_life = False if self.TOP is None else self.TOP.live
+            self.TOP = other
+        elif posX == 0 and posY == 2:
+            prev_life = False if self.TR is None else self.TR.live
+            self.TR = other
+        elif posX == 1 and posY == 0:
+            prev_life = False if self.LEFT is None else self.LEFT.live
+            self.LEFT = other
+        elif posX == 1 and posY == 1:
+            prev_life = False if self.CENTER is None else self.CENTER.live
+            self.CENTER = other
+        elif posX == 1 and posY == 2:
+            prev_life = False if self.RIGHT is None else self.RIGHT.live
+            self.RIGHT = other
+        elif posX == 2 and posY == 0:
+            prev_life = False if self.BL is None else self.BL.live
+            self.BL = other
+        elif posX == 2 and posY == 1:
+            prev_life = False if self.BOTTOM is None else self.BOTTOM.live
+            self.BOTTOM = other
+        elif posX == 2 and posY == 2:
+            prev_life = False if self.BR is None else self.BR.live
+            self.BR = other
+
+        # check live changes
+        if other.live != prev_life:
+            if other.live is True:
+                self.countDead -=1
+                self.countLive +=1
+            else:
+                self.countDead +=1
+                self.countLive -=1
+            
+        return True
 
 class LifeCell:
     def __init__(self, cell : Cell):
@@ -72,15 +154,20 @@ class LifeCell:
     # Rule 4 - Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
     '''
     def PlayRound(self):
+        row0 = [self.nbr[0][0].clone(), self.nbr[0][1].clone(), self.nbr[0][2].clone()]
+        row1 = [self.nbr[1][0].clone(), self.nbr[1][1].clone(), self.nbr[1][2].clone()]
+        row2 = [self.nbr[2][0].clone(), self.nbr[2][1].clone(), self.nbr[2][2].clone()]
+        new_states = [row0, row1, row2] 
+
         # Rule 1
         if self.countLive < 2:
-            self.getCenter().live = False
+            new_states[1][1].live = False
         # Rule 2
         if self.countLive == 2 or self.countLive == 3:
-            self.getCenter().live = True
+            new_states[1][1].live = True
         # Rule 3
         if self.countLive > 3:
-            self.getCenter().live = True
+            new_states[1][1].live = False
 
         # Rule 4 - count dead nbrs
         # 0,0   0,1   0,2
@@ -109,6 +196,8 @@ class LifeCell:
 
             i += 1
             j += 1
+            
+        self.nbr = new_states
 
 class Grid():
     def __init__(self, cells : List[Cell]):
